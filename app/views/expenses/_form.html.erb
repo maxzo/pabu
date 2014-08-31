@@ -1,0 +1,37 @@
+<%= form_for(@expense) do |f| %>
+  <% if @expense.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+
+      <ul>
+      <% @expense.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :date %>
+    <%= f.text_field :date, :class => 'form-control', :type => 'date',
+      :value => (@expense.date.nil? ? Date.today.to_s : @expense.date.strftime('%Y-%m-%d')) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :category_ids, "Categories" %>
+    <%= select_tag 'expense[category_ids]', 
+      options_for_select(@categories.map {|c| [c.name, c.id]}, 
+      @expense.expense_categories.map {|c| c.id}),
+      :class => 'form-control', :multiple => true %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_area :description, :class => 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :amount %>
+    <%= f.text_field :amount, :class => 'form-control' %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class => 'btn btn-primary' %>
+  </div>
+<% end %>
