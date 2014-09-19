@@ -1,8 +1,14 @@
-<p id="notice"><%= notice %></p>
+<h1>Income details</h1>
+<br/>
 
 <p>
   <strong>Date:</strong>
-  <%= @income.date %>
+  <%= @income.date.strftime('%-d %b %Y') %>
+</p>
+
+<p>
+  <strong>Categories:</strong>
+  <%= @income.income_categories.collect{ |x| x.name }.join(', ') %>
 </p>
 
 <p>
@@ -12,8 +18,9 @@
 
 <p>
   <strong>Amount:</strong>
-  <%= @income.amount %>
+  <%= number_to_currency(@income.amount) %>
 </p>
-
+<br/>
 <%= link_to 'Edit', edit_income_path(@income) %> |
+<%= link_to 'Delete', income_path(@income), method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Back', incomes_path %>

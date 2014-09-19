@@ -7,11 +7,6 @@ class IncomeCategoriesController < ApplicationController
     @income_categories = IncomeCategory.all
   end
 
-  # GET /income_categories/1
-  # GET /income_categories/1.json
-  def show
-  end
-
   # GET /income_categories/new
   def new
     @income_category = IncomeCategory.new
@@ -28,8 +23,8 @@ class IncomeCategoriesController < ApplicationController
 
     respond_to do |format|
       if @income_category.save
-        format.html { redirect_to @income_category, notice: 'Income category was successfully created.' }
-        format.json { render :show, status: :created, location: @income_category }
+        format.html { redirect_to income_categories_path, notice: 'Income category was successfully created.' }
+        format.json { render :show, status: :created, location: income_categories_path }
       else
         format.html { render :new }
         format.json { render json: @income_category.errors, status: :unprocessable_entity }
@@ -42,8 +37,8 @@ class IncomeCategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @income_category.update(income_category_params)
-        format.html { redirect_to @income_category, notice: 'Income category was successfully updated.' }
-        format.json { render :show, status: :ok, location: @income_category }
+        format.html { redirect_to income_categories_path, notice: 'Income category was successfully updated.' }
+        format.json { render :show, status: :ok, location: income_categories_path }
       else
         format.html { render :edit }
         format.json { render json: @income_category.errors, status: :unprocessable_entity }
@@ -56,7 +51,7 @@ class IncomeCategoriesController < ApplicationController
   def destroy
     @income_category.destroy
     respond_to do |format|
-      format.html { redirect_to income_categories_url, notice: 'Income category was successfully destroyed.' }
+      format.html { redirect_to income_categories_url, notice: 'Income category was successfully deleted.' }
       format.json { head :no_content }
     end
   end

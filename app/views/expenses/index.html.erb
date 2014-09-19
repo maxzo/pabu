@@ -1,31 +1,29 @@
-<h1>Expenses</h1>
+<div class="row">
+  <div class="col-md-7">
+    <h1>Expenses</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th class="col-sm-2">Date</th>
-      <th class="col-sm-6">Categories</th>
-      <th class="col-sm-1">Amount</th>
-      <th class="col-sm-1"></th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @expenses.each do |expense| %>
-      <tr>
-        <td><%= expense.date.strftime('%-d %b') %></td>
-        <td><%= expense.expense_categories.collect{ |x| x.name }.join(', ') %></td>
-        <td class="text-right"><%= number_to_currency(expense.amount) %></td>
-        <td></td>
-        <td><%= link_to 'Show', expense %></td>
-        <td><%= link_to 'Edit', edit_expense_path(expense) %></td>
-        <td><%= link_to 'Destroy', expense, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Expense', new_expense_path %>
+    <%= link_to 'New Expense', new_expense_path %> |
+    <%= link_to "Categories", expense_categories_path %>
+    <br/><br/>
+    
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="col-sm-2">Date</th>
+          <th class="col-sm-4">Categories</th>
+          <th class="col-sm-1">Amount</th>
+        </tr>
+      </thead>
+    
+      <tbody>
+        <% @expenses.each do |expense| %>
+          <tr onclick="location.href='<%= expense_path(expense) %>';">
+            <td><%= expense.date.strftime('%-d %b') %></td>
+            <td><%= expense.expense_categories.collect{ |x| x.name }.join(', ') %></td>
+            <td class="text-right"><%= number_to_currency(expense.amount) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

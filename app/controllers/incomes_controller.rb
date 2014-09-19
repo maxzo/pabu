@@ -4,7 +4,7 @@ class IncomesController < ApplicationController
   # GET /incomes
   # GET /incomes.json
   def index
-    @incomes = Income.all
+    @incomes = Income.all.sort_by { |i| i.date }.reverse
   end
 
   # GET /incomes/1
@@ -15,21 +15,28 @@ class IncomesController < ApplicationController
   # GET /incomes/new
   def new
     @income = Income.new
+    @categories = IncomeCategory.all.sort_by { |c| c.name }
   end
 
   # GET /incomes/1/edit
   def edit
+    @categories = IncomeCategory.all.sort_by { |c| c.name }
   end
 
   # POST /incomes
   # POST /incomes.json
   def create
-    @income = Income.new(income_params)
+    @income = Income.new(date: income_params[:date],
+      description: income_params[:description], amount: income_params[:amount])
+
+    income_params[:income_categories].reject(&:blank?).each do |id|
+      @income.income_categories << IncomeCategory.find(id)
+    end
 
     respond_to do |format|
       if @income.save
-        format.html { redirect_to @income, notice: 'Income was successfully created.' }
-        format.json { render :show, status: :created, location: @income }
+        format.html { redirect_to incomes_path, notice: 'Income was successfully created.' }
+        format.json { render :show, status: :created, location: incomes_path }
       else
         format.html { render :new }
         format.json { render json: @income.errors, status: :unprocessable_entity }
@@ -40,10 +47,19 @@ class IncomesController < ApplicationController
   # PATCH/PUT /incomes/1
   # PATCH/PUT /incomes/1.json
   def update
+    @income.date = income_params[:date]
+    @income.description = income_params[:description]
+    @income.amount = income_params[:amount].to_f
+    @income.income_categories.clear
+
+    income_params[:income_categories].reject(&:blank?).each do |id|
+      @income.income_categories << IncomeCategory.find(id)
+    end
+
     respond_to do |format|
-      if @income.update(income_params)
-        format.html { redirect_to @income, notice: 'Income was successfully updated.' }
-        format.json { render :show, status: :ok, location: @income }
+      if @income.save
+        format.html { redirect_to incomes_path, notice: 'Income was successfully updated.' }
+        format.json { render :show, status: :ok, location: incomes_path }
       else
         format.html { render :edit }
         format.json { render json: @income.errors, status: :unprocessable_entity }
@@ -56,7 +72,7 @@ class IncomesController < ApplicationController
   def destroy
     @income.destroy
     respond_to do |format|
-      format.html { redirect_to incomes_url, notice: 'Income was successfully destroyed.' }
+      format.html { redirect_to incomes_url, notice: 'Income was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +85,6 @@ class IncomesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def income_params
-      params.require(:income).permit(:date, :description, :amount)
+      params.require(:income).permit(:date, :description, :amount, income_categories: [])
     end
 end

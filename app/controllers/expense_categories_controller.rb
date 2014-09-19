@@ -7,11 +7,6 @@ class ExpenseCategoriesController < ApplicationController
     @expense_categories = ExpenseCategory.all
   end
 
-  # GET /expense_categories/1
-  # GET /expense_categories/1.json
-  def show
-  end
-
   # GET /expense_categories/new
   def new
     @expense_category = ExpenseCategory.new
@@ -28,8 +23,8 @@ class ExpenseCategoriesController < ApplicationController
 
     respond_to do |format|
       if @expense_category.save
-        format.html { redirect_to @expense_category, notice: 'Expense category was successfully created.' }
-        format.json { render :show, status: :created, location: @expense_category }
+        format.html { redirect_to expense_categories_path, notice: 'Expense category was successfully created.' }
+        format.json { render :show, status: :created, location: expense_categories_path }
       else
         format.html { render :new }
         format.json { render json: @expense_category.errors, status: :unprocessable_entity }
@@ -42,8 +37,8 @@ class ExpenseCategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @expense_category.update(expense_category_params)
-        format.html { redirect_to @expense_category, notice: 'Expense category was successfully updated.' }
-        format.json { render :show, status: :ok, location: @expense_category }
+        format.html { redirect_to expense_categories_path, notice: 'Expense category was successfully updated.' }
+        format.json { render :show, status: :ok, location: expense_categories_path }
       else
         format.html { render :edit }
         format.json { render json: @expense_category.errors, status: :unprocessable_entity }
@@ -56,7 +51,7 @@ class ExpenseCategoriesController < ApplicationController
   def destroy
     @expense_category.destroy
     respond_to do |format|
-      format.html { redirect_to expense_categories_url, notice: 'Expense category was successfully destroyed.' }
+      format.html { redirect_to expense_categories_url, notice: 'Expense category was successfully deleted.' }
       format.json { head :no_content }
     end
   end

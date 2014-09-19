@@ -1,14 +1,5 @@
-<% unless notice.nil? %>
-	<div id="notice" class="alert alert-success alert-dismissible" role="alert">
-	 	<button type="button" class="close" data-dismiss="alert">
-	 		<span aria-hidden="true">&times;</span>
-	 		<span class="sr-only">Close</span>
-	 	</button>
-		<%= notice %>
-	</div>
-<% end %>
-
 <h1>Expense details</h1>
+<br/>
 
 <p>
   <strong>Date:</strong>
@@ -31,4 +22,5 @@
 </p>
 <br/>
 <%= link_to 'Edit', edit_expense_path(@expense) %> |
+<%= link_to 'Delete', expense_path(@expense), method: :delete, data: { confirm: 'Are you sure?' } %> |
 <%= link_to 'Back', expenses_path %>

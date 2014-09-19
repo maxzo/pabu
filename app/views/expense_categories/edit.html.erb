@@ -1,6 +1,10 @@
-<h1>Editing expense_category</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @expense_category %> |
-<%= link_to 'Back', expense_categories_path %>
+<div class="row">
+  <div class="col-md-5">
+    <h1>Edit category</h1>
+    
+    <%= render 'form' %>
+    <br/>
+    <%= link_to 'Delete', expense_category_path(@expense_category), method: :delete, data: { confirm: 'Are you sure?' } %> |
+    <%= link_to 'Back', expense_categories_path %>
+  </div>
+</div>
